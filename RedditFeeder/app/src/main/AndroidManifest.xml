@@ -24,9 +24,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:host="www.redditfeeder.com"
-                    android:scheme="http"
-                    android:path="/redirecionador" />
+                <data android:host="github.com"
+                    android:scheme="https"
+                    android:path="/josecostamartins/Capstone-Project" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,6 +34,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data android:name="net.dean.jraw.REDDIT_USERNAME" android:value="sfamrcks" />
     </application>
 
 </manifest>

@@ -1,7 +1,5 @@
 package br.com.digitaldreams.redditfeeder;
 
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.util.Base64;
 import android.util.Log;
 
@@ -9,12 +7,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -36,7 +32,7 @@ public class Networking {
     public static final String CLIENT_ID = "-55kCXOdwiC4pg";
 
     public static final String REDIRECT_URI =
-            "http://www.redditfeeder.com/redirecionador";
+            "https://github.com/josecostamartins/Capstone-Project";
 
     public static final String ACCESS_TOKEN_URL =
             "https://www.reddit.com/api/v1/access_token";

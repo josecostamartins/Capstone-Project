@@ -19,6 +19,12 @@
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
 
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+    </WebView>
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
@@ -38,7 +44,7 @@
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_email"
+                    android:hint="@string/prompt_username"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:singleLine="true" />
