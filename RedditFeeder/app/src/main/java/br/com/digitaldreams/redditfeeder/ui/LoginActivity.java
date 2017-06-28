@@ -1,37 +1,16 @@
-package br.com.digitaldreams.redditfeeder;
+package br.com.digitaldreams.redditfeeder.ui;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
 
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,24 +24,10 @@ import net.dean.jraw.http.oauth.OAuthData;
 import net.dean.jraw.http.oauth.OAuthException;
 import net.dean.jraw.http.oauth.OAuthHelper;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.internal.Util;
-
-import static android.Manifest.permission.READ_CONTACTS;
+import br.com.digitaldreams.redditfeeder.Networking;
+import br.com.digitaldreams.redditfeeder.R;
 
 /**
  * A login screen that offers login via email/password.
@@ -134,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(Void v) {
                 Log.d(TAG, "Reauthenticated");
+                changeActivity();
             }
         }.execute();
     }
@@ -155,6 +121,7 @@ public class LoginActivity extends AppCompatActivity {
         // Load the authorization URL into the browser
         webView.loadUrl(authorizationUrl.toExternalForm());
         webView.setWebViewClient(new WebViewClient() {
+
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 if (url.contains("code=")) {
@@ -188,9 +155,16 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i(TAG, s);
                 mErrorView.setVisibility(View.VISIBLE);
                 mErrorView.setText(s);
+                changeActivity();
 //                LoginActivity.this.finish();
             }
         }.execute(url);
+    }
+
+    private void changeActivity(){
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }

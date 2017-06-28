@@ -75,7 +75,7 @@ public class AppController extends Application {
         return mInstance.authenticationManager;
     }
 
-    private RedditClient getReddit() {
+    public RedditClient getReddit() {
         if (mInstance.reddit == null) {
             initAuthenticationManager();
         }

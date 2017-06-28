@@ -1,4 +1,4 @@
-package br.com.digitaldreams.redditfeeder;
+package br.com.digitaldreams.redditfeeder.utils;
 
 import android.text.TextUtils;
 

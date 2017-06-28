@@ -15,6 +15,8 @@ import net.dean.jraw.http.oauth.InvalidScopeException;
  * This class enhances the RedditClient by taking advantage of the Android platform. Using the
  * {@link #AndroidRedditClient(Context)} constructor, the UserAgent may be automagically determined from the app's
  * manifest.
+ *
+ * copied from https://github.com/thatJavaNerd/JRAW-Android
  */
 public class AndroidRedditClient extends RedditClient {
     private static final String KEY_USER_AGENT_OVERRIDE = "net.dean.jraw.USER_AGENT_OVERRIDE";

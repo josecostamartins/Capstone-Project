@@ -15,4 +15,6 @@
     </string>
     <string name="prompt_username">Username</string>
     <string name="prefs_file">br.com.digitaldreams.redditfeeder</string>
+    <string name="loading">Loading</string>
+    <string name="accounts_active">active account(s)</string>
 </resources>
