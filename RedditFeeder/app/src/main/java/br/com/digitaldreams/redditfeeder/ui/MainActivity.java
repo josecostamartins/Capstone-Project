@@ -21,62 +21,58 @@ import java.util.List;
 
 import br.com.digitaldreams.redditfeeder.AppController;
 import br.com.digitaldreams.redditfeeder.R;
+import br.com.digitaldreams.redditfeeder.reddit.RedditApi;
 import br.com.digitaldreams.redditfeeder.ui.adapter.SubredditAdapter;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
-    ListView subredditsListView;
+    private ListView subredditsListView;
     private Context mContext = this;
+    private Disposable disposable;
+    private ArrayList<Subreddit> mySubreddits;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        subredditsListView = (ListView) findViewById(R.id.my_subreddit);
         if (savedInstanceState == null) {
             getSubreddits();
-            subredditsListView = (ListView) findViewById(R.id.my_subreddit);
         }
 
     }
 
-    private void getSubreddits() {
-        new AsyncTask<Void, Void, ArrayList<Subreddit>>() {
-            @Override
-            protected ArrayList<Subreddit> doInBackground(Void... params) {
-                UserSubredditsPaginator paginator = new UserSubredditsPaginator(AppController.getmInstance().getReddit(), "subscriber");
-                ArrayList<Subreddit> mySubreddits = new ArrayList<>();
-                while (paginator.hasNext()) {
-                    Listing<Subreddit> subreddits = paginator.next();
-                    for (Subreddit subreddit : subreddits) {
-                        if (!subreddit.isNsfw()) {
-                            mySubreddits.add(subreddit);
-                        }
-                    }
-                }
+    private void updateUI() {
 
-                // sorting
-                if (!mySubreddits.isEmpty()) {
-                    Collections.sort(mySubreddits, new Comparator<Subreddit>() {
-                        @Override
-                        public int compare(Subreddit o1, Subreddit o2) {
-                            return o1.getDisplayName().compareToIgnoreCase(o2.getDisplayName());
-                        }
-                    });
-                }
-
-                return mySubreddits;
-            }
-
-
-            @Override
-            protected void onPostExecute(ArrayList<Subreddit> localSubredditList) {
-                SubredditAdapter subredditAdapter = new SubredditAdapter(localSubredditList, mContext);
-                subredditsListView.setAdapter(subredditAdapter);
-                subredditAdapter.notifyDataSetChanged();
-            }
-        }.execute();
     }
 
+    private void getSubreddits() {
+        disposable = RedditApi.observableSubreddits()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((result) -> {
+                    SubredditAdapter subredditAdapter = new SubredditAdapter(result, mContext);
+                    subredditsListView.setAdapter(subredditAdapter);
+                    subredditAdapter.notifyDataSetChanged();
+                });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
+    }
 
 }

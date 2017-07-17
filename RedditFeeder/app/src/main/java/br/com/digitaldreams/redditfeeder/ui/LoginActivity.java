@@ -28,6 +28,10 @@ import java.net.URL;
 
 import br.com.digitaldreams.redditfeeder.Networking;
 import br.com.digitaldreams.redditfeeder.R;
+import br.com.digitaldreams.redditfeeder.reddit.RedditApi;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * A login screen that offers login via email/password.
@@ -127,7 +131,16 @@ public class LoginActivity extends AppCompatActivity {
                 if (url.contains("code=")) {
                     // We've detected the redirect URL
                     webView.setVisibility(View.GONE);
-                    onUserChallenge(url, CREDENTIALS);
+//                    onUserChallenge(url, CREDENTIALS);
+                    RedditApi.observableUserChallenge(TAG, url, CREDENTIALS)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe((result) -> {
+                                Log.i(TAG, result);
+                                mErrorView.setVisibility(View.VISIBLE);
+                                mErrorView.setText(result);
+                                changeActivity();
+                            });
                 } else if (url.contains("error=")) {
                     Toast.makeText(LoginActivity.this, "You must press 'allow' to log in with this account", Toast.LENGTH_SHORT).show();
                     webView.loadUrl(authorizationUrl.toExternalForm());
