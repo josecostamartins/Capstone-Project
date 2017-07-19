@@ -16,6 +16,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <provider
+            android:name=".data.RedditFeederProvider"
+            android:authorities="br.com.digitaldreams.redditfeeder.database"
+            android:exported="false"
+            android:protectionLevel="signature"
+            android:syncable="true"/>
         <activity
             android:name=".ui.LoginActivity"
             android:label="@string/app_name">
